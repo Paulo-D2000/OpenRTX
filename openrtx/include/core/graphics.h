@@ -80,6 +80,7 @@ typedef enum
 {
     FONT_SIZE_5PT = 0,
     FONT_SIZE_6PT,
+	FONT_SIZE_7PT,
     FONT_SIZE_8PT,
     FONT_SIZE_9PT,
     FONT_SIZE_10PT,

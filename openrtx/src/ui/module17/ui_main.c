@@ -35,42 +35,11 @@ void _ui_drawMainBackground()
 
 void _ui_drawMainTop()
 {
-#ifdef RTC_PRESENT
-    // Print clock on top bar
-    datetime_t local_time = utcToLocalTime(last_state.time,
-                                           last_state.settings.utc_timezone);
-    gfx_print(layout.top_pos, layout.top_font, TEXT_ALIGN_CENTER,
-              color_white, "%02d:%02d:%02d", local_time.hour,
-              local_time.minute, local_time.second);
-#endif
-    // If the radio has no built-in battery, print input voltage
-#ifdef BAT_NONE
-    gfx_print(layout.top_pos, layout.top_font, TEXT_ALIGN_RIGHT,
-              color_white,"%.1fV", last_state.v_bat);
-#else
-    // Otherwise print battery icon on top bar, use 4 px padding
-    uint16_t bat_width = SCREEN_WIDTH / 9;
-    uint16_t bat_height = layout.top_h - (layout.status_v_pad * 2);
-    point_t bat_pos = {SCREEN_WIDTH - bat_width - layout.horizontal_pad,
-                       layout.status_v_pad};
-    gfx_drawBattery(bat_pos, bat_width, bat_height, last_state.charge);
-#endif
-    // Print radio mode on top bar
-    switch(last_state.channel.mode)
-    {
-        case OPMODE_FM:
-        gfx_print(layout.top_pos, layout.top_font, TEXT_ALIGN_LEFT,
-                  color_white, "FM");
-        break;
-        case OPMODE_DMR:
-        gfx_print(layout.top_pos, layout.top_font, TEXT_ALIGN_LEFT,
-                  color_white, "DMR");
-        break;
-        case OPMODE_M17:
-        gfx_print(layout.top_pos, layout.top_font, TEXT_ALIGN_LEFT,
-                  color_white, "M17");
-        break;
-    }
+	 gfx_print(layout.top_pos, layout.top_font, TEXT_ALIGN_LEFT,
+			color_white, last_state.settings.callsign);
+				  
+	gfx_print(layout.top_pos, layout.top_font, TEXT_ALIGN_RIGHT,
+			color_white,"%.1fV", 13.8);
 }
 
 void _ui_drawBankChannel()
@@ -145,10 +114,10 @@ void _ui_drawFrequency()
        frequency = last_state.channel.tx_frequency : last_state.channel.rx_frequency;
 
     // Print big numbers frequency
-    gfx_print(layout.line3_pos, layout.line3_font, TEXT_ALIGN_CENTER,
-              color_white, "%03lu.%05lu",
-              (unsigned long)frequency/1000000,
-              (unsigned long)frequency%1000000/10);
+    gfx_print(layout.line2_pos, FONT_SIZE_7PT, TEXT_ALIGN_LEFT,
+              color_white, "DST: BROADCAST");
+    gfx_print(layout.line3_pos, FONT_SIZE_6PT, TEXT_ALIGN_LEFT,
+              color_white, "CAN: 0");          
 }
 
 void _ui_drawVFOMiddleInput(ui_state_t* ui_state)
@@ -208,39 +177,10 @@ void _ui_drawVFOMiddleInput(ui_state_t* ui_state)
 
 void _ui_drawMainBottom()
 {
-    // Squelch bar
-    float rssi = last_state.rssi;
-    float squelch = last_state.settings.sqlLevel / 16.0f;
-    uint16_t meter_width = SCREEN_WIDTH - 2 * layout.horizontal_pad;
-    uint16_t meter_height = layout.bottom_h;
-    point_t meter_pos = { layout.horizontal_pad,
-                          SCREEN_HEIGHT - meter_height - layout.bottom_pad};
-    uint8_t mic_level = platform_getMicLevel();
-    switch(last_state.channel.mode)
-    {
-        case OPMODE_FM:
-            gfx_drawSmeter(meter_pos,
-                           meter_width,
-                           meter_height,
-                           rssi,
-                           squelch,
-                           yellow_fab413);
-            break;
-        case OPMODE_DMR:
-            gfx_drawSmeterLevel(meter_pos,
-                                meter_width,
-                                meter_height,
-                                rssi,
-                                mic_level);
-            break;
-        case OPMODE_M17:
-            gfx_drawSmeterLevel(meter_pos,
-                                meter_width,
-                                meter_height,
-                                rssi,
-                                mic_level);
-            break;
-    }
+    gfx_print(layout.bottom_pos, layout.menu_font, TEXT_ALIGN_CENTER,
+                color_white, "DST");
+    gfx_print(layout.bottom_pos, layout.menu_font, TEXT_ALIGN_RIGHT,
+                color_white, "Menu");     
 }
 
 void _ui_drawMainVFO(ui_state_t* ui_state)

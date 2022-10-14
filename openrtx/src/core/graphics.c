@@ -35,6 +35,7 @@
 #include <gfxfont.h>
 #include <TomThumb.h>
 #include <FreeSans6pt7b.h>
+#include <FreeSans7pt7b.h>
 #include <FreeSans8pt7b.h>
 #include <FreeSans9pt7b.h>
 #include <FreeSans10pt7b.h>
@@ -62,6 +63,7 @@
 static const GFXfont fonts[] = { TomThumb,            // 5pt
     #if defined FONT_FREE_SANS
                                  FreeSans6pt7b,       // 6pt
+								 FreeSans7pt7b, 	  // 7pt
                                  FreeSans8pt7b,       // 8pt
                                  FreeSans9pt7b,       // 9pt
                                  FreeSans10pt7b,      // 10pt
